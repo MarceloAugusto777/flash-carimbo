@@ -256,4 +256,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Preview Call
   updatePreview();
+
+  // ---- Animação scroll dos cards de passos ----
+  const passoCards = document.querySelectorAll('.passo-card');
+  if (passoCards.length > 0 && 'IntersectionObserver' in window) {
+    const passoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          passoObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    passoCards.forEach(card => passoObserver.observe(card));
+  } else {
+    // fallback sem IntersectionObserver
+    passoCards.forEach(card => card.classList.add('visible'));
+  }
 });
